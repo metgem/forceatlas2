@@ -1,8 +1,8 @@
-ForceAtlas2 for Python and NetworkX
-===================================
+ForceAtlas2 for Python
+======================
 
 A port of Gephi’s Force Atlas 2 layout algorithm to Python 2 and Python
-3 (with a wrapper for NetworkX). This is the fastest python
+3 (with wrappers for NetworkX and igraph). This is the fastest python
 implementation available with most of the features complete. It also
 supports Barnes Hut approximation for maximum speedup.
 
@@ -38,6 +38,7 @@ Dependencies
 -  Cython (10-100x speedup)
 -  networkx (To use the NetworkX wrapper function, you obviously need
    NetworkX)
+-  python-igraph (for the igraph wrapper)
 
 Usage
 -----
@@ -61,12 +62,21 @@ class contains two important methods:
     # pos is a dictionary, as in networkx
     # iterations is num of iterations to run the algorithm
 
+.. code:: python
+
+    forceatlas2_igraph_layout(G, pos, iterations, weight_attr)
+    # G is igraph graph
+    # pos is a numpy array or list
+    # iterations is num of iterations to run the algorithm
+    # weight_attr denotes the weight attribute in G.es, None by default
+
 Below is an example usage. You can also see the feature settings of
 ForceAtlas2 class.
 
 .. code-block:: python
   
     import networkx as nx
+    import igraph
     from fa2 import ForceAtlas2
     import matplotlib.pyplot as plt
 
@@ -96,6 +106,11 @@ ForceAtlas2 class.
     positions = forceatlas2.forceatlas2_networkx_layout(G, pos=None, iterations=2000)
     nx.draw_networkx(G, positions, cmap=plt.get_cmap('jet'), node_size=50, with_labels=False)
     plt.show()
+
+    G = igraph.Graph.TupleList(G.edges(), directed=False)
+    layout = forceatlas2.forceatlas2_igraph_layout(G, pos=None, iterations=2000)
+    igraph.plot(G, layout).show()
+
     
 You can also take a look at forceatlas2.py file for understanding the
 ForceAtlas2 class and its functions better.
