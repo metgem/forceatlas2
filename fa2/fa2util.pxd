@@ -20,6 +20,7 @@ cdef class Node:
     cdef public double old_dx, old_dy
     cdef public double dx, dy
     cdef public double x, y
+    cdef public int size
 
 # This is not in the original java function, but it makes it easier to
 # deal with edges.
@@ -35,13 +36,13 @@ cdef class Edge:
                yDist = cython.double, 
                distance2 = cython.double, 
                factor = cython.double)
-cdef void linRepulsion(Node n1, Node n2, double coefficient=*)
+cdef void linRepulsion(Node n1, Node n2, double coefficient=*, bint adjustSizes=*)
 
 @cython.locals(xDist = cython.double,
                yDist = cython.double,
                distance2 = cython.double,
                factor = cython.double)
-cdef void linRepulsion_region(Node n, Region r, double coefficient=*)
+cdef void linRepulsion_region(Node n, Region r, double coefficient=*, bint adjustSizes=*)
 
 
 @cython.locals(xDist = cython.double, 
@@ -58,20 +59,21 @@ cdef void strongGravity(Node n, double g, double coefficient=*)
 
 @cython.locals(xDist = cython.double, 
                yDist = cython.double, 
-               factor = cython.double)
-cpdef void linAttraction(Node n1, Node n2, double e, bint distributedAttraction, double coefficient=*)
+               factor = cython.double,
+               distance = cython.double)
+cpdef void linAttraction(Node n1, Node n2, double e, bint distributedAttraction, double coefficient=*, bint adjustSizes=*)
 
 @cython.locals(i = cython.int,
                j = cython.int,
                n1 = Node,
                n2 = Node)
-cpdef void apply_repulsion(list nodes, double coefficient)
+cpdef void apply_repulsion(list nodes, double coefficient, bint adjustSizes=*)
 
 @cython.locals(n = Node)
 cpdef void apply_gravity(list nodes, double gravity, bint useStrongGravity=*)
 
 @cython.locals(edge = Edge)
-cpdef void apply_attraction(list nodes, list edges, bint distributedAttraction, double coefficient, double edgeWeightInfluence)
+cpdef void apply_attraction(list nodes, list edges, bint distributedAttraction, double coefficient, double edgeWeightInfluence, bint adjustSizes=*)
 
 cdef class Region:
     cdef public double mass
@@ -99,10 +101,10 @@ cdef class Region:
 
     @cython.locals(distance = cython.double,
                    subregion = Region)
-    cdef void applyForce(self, Node n, double theta, double coefficient=*)
+    cdef void applyForce(self, Node n, double theta, double coefficient=*, bint adjustSizes=*)
 
     @cython.locals(n = Node)
-    cpdef applyForceOnNodes(self, list nodes, double theta, double coefficient=*)
+    cpdef applyForceOnNodes(self, list nodes, double theta, double coefficient=*, bint adjustSizes=*)
 
 @cython.locals(totalSwinging = cython.double,
                totalEffectiveTraction = cython.double,
@@ -119,4 +121,4 @@ cdef class Region:
                maxRise = cython.double,
                factor = cython.double,
                values = dict)
-cpdef dict adjustSpeedAndApplyForces(list nodes, double speed, double speedEfficiency, double jitterTolerance)
+cpdef dict adjustSpeedAndApplyForces(list nodes, double speed, double speedEfficiency, double jitterTolerance, bint adjustSizes=*)
