@@ -55,10 +55,11 @@ setup(
         'Programming Language :: Python :: 2',
         'Programming Language :: Python :: 3'
     ],
-    install_requires=['numpy', 'scipy', 'tqdm'],
+    install_requires=['numpy', 'scipy'],
     extras_require={
         'networkx': ['networkx'],
         'igraph': ['python-igraph']
+        'tqdm': ['tdqm']
     },
     include_package_data=True,
     **cythonopts
