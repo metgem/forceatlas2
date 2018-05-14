@@ -23,7 +23,6 @@ import time
 
 import numpy
 import scipy
-from tqdm import tqdm
 
 from . import fa2util
 
@@ -177,6 +176,7 @@ class ForceAtlas2:
         # Each iteration of this loop represents a call to goAlgo().
         niters = range(iterations)
         if self.verbose:
+            from tqdm import tqdm
             niters = tqdm(niters)
         for _i in niters:
             for n in nodes:
