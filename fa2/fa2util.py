@@ -161,10 +161,12 @@ def apply_attraction(nodes, edges, distributedAttraction, coefficient, edgeWeigh
     # Optimization, since usually edgeWeightInfluence is 0 or 1, and pow is slow
     if edgeWeightInfluence == 0:
         for edge in edges:
-            linAttraction(nodes[edge.node1], nodes[edge.node2], 1, distributedAttraction, coefficient, adjustSizes=adjustSizes)
+            linAttraction(nodes[edge.node1], nodes[edge.node2], 1, distributedAttraction, coefficient,
+                          adjustSizes=adjustSizes)
     elif edgeWeightInfluence == 1:
         for edge in edges:
-            linAttraction(nodes[edge.node1], nodes[edge.node2], edge.weight, distributedAttraction, coefficient, adjustSizes=adjustSizes)
+            linAttraction(nodes[edge.node1], nodes[edge.node2], edge.weight, distributedAttraction, coefficient,
+                          adjustSizes=adjustSizes)
     else:
         for edge in edges:
             linAttraction(nodes[edge.node1], nodes[edge.node2], pow(edge.weight, edgeWeightInfluence),
