@@ -1,0 +1,37 @@
+{% set data = load_setup_py_data() %}
+
+package:
+    name: forceatlas2
+    version: {{ data.get('version') }}
+
+source:
+    path: ../
+
+build:
+    number: 0
+    script: python setup.py install --single-version-externally-managed --record=record.txt
+
+requirements:
+    build:
+        - python=3.7
+        - setuptools
+        - cython
+    run:
+        - python
+
+test:
+    imports:
+        - PyQtNetworkView
+
+about:
+    home: http://github.com/metgem/forceatlas2
+    license: GPLv3
+    license_family: GPL
+    license_file: 'LICENSE'
+    summary: 'ForceAtlas2 for Python'
+    description: 'A port of Gephi’s Force Atlas 2 layout algorithm to Python 2 and Python 3 (with wrappers for NetworkX and igraph). This is the fastest python implementation available with most of the features complete. It also supports Barnes Hut approximation for maximum speedup.'
+    doc_url: ''
+    dev_url: 'http://github.com/metgem/forceatlas2'
+
+extra:
+    recipe-maintainers: 'nicolas.elie@cnrs.fr'
