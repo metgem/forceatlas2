@@ -1,11 +1,8 @@
-name: Tests
+name: Release
 
 on:
-  push:
-    branches: [ master, dev ]
-    paths-ignore:
-    - 'docs/**'
-  pull_request:
+  release:
+    types: [ published ]
     branches: [ master ]
 
 jobs:
@@ -13,7 +10,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        python-version: [3.7] #[3.5, 3.6, 3.7, 3.8]
+        python-version: [3.5, 3.6, 3.7, 3.8]
         os: [ubuntu-latest, windows-latest, macos-latest]
       fail-fast: false
 
@@ -35,16 +32,12 @@ jobs:
     - name: Install build dependencies
       shell: bash -l {0}
       run: |
-        conda install -n base numpy
-        conda install numpy cython cxx-compiler
-    - name: Add msbuild to PATH
-      uses: microsoft/setup-msbuild@v1.0.0
-      if: ${{ runner.os == 'Windows' }}
+        conda install -n base conda-build conda-verify numpy
+        conda install anaconda-client
     - name: Build
       shell: bash -l {0}
       run: |
-        python setup.py build_ext --inplace
-        python setup.py develop
-    - name: Import module
-      shell: bash -l {0}
-      run: python -c "import fa2"
+        conda config --set anaconda_upload yes
+        conda build recipe --python ${{ matrix.python-version }} --token ${{ secrets.ANACONDA_UPLOAD_TOKEN }} --user metgem
+        
+ 

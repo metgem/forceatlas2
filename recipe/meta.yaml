@@ -17,6 +17,7 @@ requirements:
     host:
         - python
         - cython
+        - numpy
     run:
         - python
         - {{ pin_compatible('numpy') }}
